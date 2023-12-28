@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: cppcheck
+Version: 0.0.0
+Summary: Python script to parse the XML (version 2) output of cppcheck and generate an HTML report using Pygments for syntax highlighting.
+Home-page: https://github.com/danmar/cppcheck
+Author: Henrik Nilsson
+License: GPL
+
+cppcheck-htmlreport
+
+This is a little utility to generate a html report of a XML file produced by
+cppcheck.
+
+The utility is implemented in Python (2.7+) and requires the pygments module
+to generate syntax highlighted source code.
+If you are using a Debian based Linux system, the pygments package can be 
+installed by following command:
+$ sudo apt-get install python-pygments
+
+For more information run './cppcheck-htmlreport --help'

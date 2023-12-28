@@ -1,0 +1,161 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Test All",
+            "command": "ceedling",
+            "args": [
+                "test:all"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "Clean",
+            "command": "ceedling",
+            "args": [
+                "clobber"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "Clean and Test All",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Clean"
+            ],
+            "command": "ceedling",
+            "args": [
+                "test:all"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+
+        {
+            "type": "shell",
+            "label": "Open GCOV",
+            "command": "start",
+            "args": [
+                "GcovCoverageResults.html"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}//build//artifacts//gcov"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+
+        {
+            "type": "shell",
+            "label": "Open Static Analysis",
+            "command": "start",
+            "args": [
+                "stats.html"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}//scripts//html-report-stats//static_analysis_result"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+
+        {
+            "type": "shell",
+            "label": "Open HTML",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Open GCOV", "Open Static Analysis"
+            ],
+            "command": "start",
+            "args": [
+                "report.html"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}//build//artifacts//gcov"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        
+        {
+            // ceedling gcov:all utils:gcov
+            "type": "shell",
+            "label": "Report HTML",
+            "command": "ceedling",
+            "args": [
+                "gcov:all",
+                "utils:gcov"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        }
+        ,
+        {
+            // ceedling gcov:all utils:gcov
+            "type": "shell",
+            "label": "Static Analysis",
+            "command": "./html-report-stats/static_run.sh",
+            "args": [
+
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/scripts"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+
+        {
+            // ceedling gcov:all utils:gcov
+            "type": "shell",
+            "label": "Code Beautifier",
+            "command": "./code_beautifier.sh",
+            "args": [
+
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}//scripts"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        }
+
+    ]
+}

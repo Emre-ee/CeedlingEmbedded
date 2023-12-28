@@ -1,0 +1,306 @@
+---
+
+# Notes:
+# Sample project C code is not presently written to produce a release artifact.
+# As such, release build options are disabled.
+# This sample, therefore, only demonstrates running a collection of unit tests.
+#
+# This project is meant to use ceedling for unit test builds 
+# and esp-idf can be run separately for target builds
+
+:project:
+  :use_exceptions: FALSE
+  :use_test_preprocessor: TRUE
+  :use_deep_dependencies: FALSE
+  # :use_auxiliary_dependencies: TRUE
+  :build_root: build
+#  :release_build: TRUE
+  :test_file_prefix: test_
+  :which_ceedling: gem
+  :ceedling_version: 0.31.1
+  :default_tasks:
+    - test:all
+
+#:test_build:
+#  :use_assembly: TRUE
+
+#:release_build:
+#  :output: MyApp.out
+#  :use_assembly: FALSE
+
+:environment:
+
+:extension:
+  :executable: .out
+
+:paths:
+  :test:
+    - +:test/**
+    - -:test/support
+  :source:
+    - +:src/**
+    - +:lib/**
+  :include:
+    # you could include library
+    - +:lib/hal_gpio/include/**
+  :support:
+    - test/support
+  :libraries: []
+
+:defines:
+  # in order to add common defines:
+  #  1) remove the trailing [] from the :common: section
+  #  2) add entries to the :common: section (e.g. :test: has TEST defined)
+  :common: &common_defines []
+  :test:
+    - *common_defines
+    - TEST
+    - UNITY_INCLUDE_PRINT_FORMATTED
+    - UNITY_USE_FLUSH_STDOUT
+    - UNITY_OUTPUT_COLOR
+  :test_preprocess:
+    - *common_defines
+    - TEST
+    - PRIVILEGED_FUNCTION
+  
+:cmock:
+  :includes:
+    - stdint.h
+  :includes_h_pre_orig_header:
+    - stdint.h
+  :mock_prefix: mock_
+  :when_no_prototypes: :warn
+  :enforce_strict_ordering: TRUE
+  :plugins:
+    - :expect
+    - :ignore
+    - :array
+    - :expect_any_args
+    - :return_thru_ptr
+    - :ignore_arg
+    - :callback
+  :when_ptr: :compare_data
+  :unity_helper:
+    - test/support/unity_helper.h
+  :treat_as:
+    uint8:    HEX8
+    uint16:   HEX16
+    uint32:   UINT32
+    int8:     INT8
+    bool:     UINT8
+
+# Add -gcov to the plugins list to make sure of the gcov plugin
+# You will need to have gcov and gcovr both installed to make it work.
+# For more information on these options, see docs in plugins/gcov
+:gcov:
+  :reports:
+    - HtmlDetailed
+
+  :gcovr:
+    :print_summary: TRUE
+    :html_report: TRUE
+    :html_report_type: detailed
+
+:module_generator:
+  :boilerplates:
+    :tst: "/**\n
+          * @file	               test_xxx.c\n
+          * @version	               0.1\n
+          * @date	               xx xxxxxx xxxx\n
+          * @author	               Mehmet Emre Ozturk\n
+          *                         xxxx xxxx\n
+          * @brief	               This module contains tests of xxxx.c functions.\n
+          /***************************************** Test Include Files*************************************************************************/\n
+          /*************************************************************************************************************************************/\n
+          /***************************************** Macros ************************************************************************************/\n
+          /*************************************************************************************************************************************/\n
+          /***************************************** Global Variables **************************************************************************/\n
+          /*************************************************************************************************************************************/\n
+          /***************************************** Test setup functions **********************************************************************/\n
+          /*************************************************************************************************************************************/\n
+          /***************************************** Static Functions **************************************************************************/\n
+          /*************************************************************************************************************************************/\n
+          /***************************************** Test Suites********************************************************************************/\n
+          /*************************************************************************************************************************************/\n"
+
+# :tools:
+#   :release_compiler:
+#     :executable: arm-none-eabi-gcc             #exists in system search path
+#     :arguments:
+#       - ${1}
+#       - -DTARGET
+#       - -mcpu=cortex-m0
+#       - -mthumb
+#       - -mfpu=fpv4-sp-d16 
+#       - -mfloat-abi=hard
+#       - -g
+#       - -Isrc/
+#       - -I"$": COLLECTION_PATHS_RELEASE_TOOLCHAIN_INCLUDE 
+#       - -Wall
+#       - -Os
+#       - -c
+#       - -o ${2}
+#   :release_linker:
+#     :executable: arm-none-eabi-gcc
+#     :arguments:
+#       - ${1}
+#       - -DTARGET
+#       - -Isrc/
+#       - -I"$": COLLECTION_PATHS_RELEASE_TOOLCHAIN_INCLUDE 
+#       - -mcpu=cortex-m0
+#       - -mthumb
+#       - -mfpu=fpv4-sp-d16 
+#       - -mfloat-abi=hard
+#       - -Wl,-Map="stmBase.map"
+#       - -g
+#       - -T"startup/STM32G070CBTX_FLASH.ld"
+#       - --specs=nosys.specs
+#       - -o ${2}.elf
+#   :release_assembler:
+    :executable: arm-none-eabi-gcc
+    :arguments:
+      - ${1}
+      - -DTARGET
+      - -I"$": COLLECTION_PATHS_RELEASE_TOOLCHAIN_INCLUDE 
+      - -mcpu=cortex-m0
+      - -mthumb
+      - -mfpu=fpv4-sp-d16 
+      - -mfloat-abi=hard
+      - -g
+      - -Wall
+      - -Os
+      - -c
+      - -o ${2}
+:tools:
+  # :test_compiler:
+  #   :executable: gcc.exe
+  #   :name: default_test_compiler
+  #   :stderr_redirect: :none
+  #   :background_exec: :true
+  #   :optional: false
+  #   :arguments:
+  #   - "-E"
+  #   - -I"$": COLLECTION_PATHS_TEST_SUPPORT_SOURCE_INCLUDE_VENDOR
+  #   - -I"$": COLLECTION_PATHS_TEST_TOOLCHAIN_INCLUDE
+  #   - "-D$": COLLECTION_DEFINES_TEST_AND_VENDOR
+  #   - "-D$": DEFINES_TEST_PREPROCESS
+  #   - "-DGNU_COMPILER"
+  #   - "-fdirectives-only"
+  #   - '"${1}"'
+  #   - -o "${2}"
+  :test_file_preprocessor:
+    :executable: gcc.exe
+    :name: default_test_file_preprocessor
+    :stderr_redirect: :none
+    :background_exec: :none
+    :optional: false
+    :arguments:
+    - ''
+    - ''
+    - "-E"
+    - -I"$": COLLECTION_PATHS_TEST_SUPPORT_SOURCE_INCLUDE_VENDOR
+    - -I"$": COLLECTION_PATHS_TEST_TOOLCHAIN_INCLUDE
+    - "-D$": COLLECTION_DEFINES_TEST_AND_VENDOR
+    - "-D$": DEFINES_TEST_PREPROCESS
+    - "-DGNU_COMPILER"
+    - '"${1}"'
+    - -o "${2}"
+  :test_file_preprocessor_directives:
+    :executable: gcc.exe
+    :name: default_test_file_preprocessor_directives
+    :stderr_redirect: :none
+    :background_exec: :none
+    :optional: false
+    :arguments:
+    - "-E"
+    - -I"$": COLLECTION_PATHS_TEST_SUPPORT_SOURCE_INCLUDE_VENDOR
+    - -I"$": COLLECTION_PATHS_TEST_TOOLCHAIN_INCLUDE
+    - "-D$": COLLECTION_DEFINES_TEST_AND_VENDOR
+    - "-D$": DEFINES_TEST_PREPROCESS
+    - "-DGNU_COMPILER"
+    - "-fdirectives-only"
+    - '"${1}"'
+    - -o "${2}"
+  :test_includes_preprocessor:
+    :executable: gcc.exe
+    :name: default_test_includes_preprocessor
+    :stderr_redirect: :none
+    :background_exec: :none
+    :optional: false
+    :arguments:
+    - ''
+    - ''
+    - "-E"
+    - "-MM"
+    - "-MG"
+    - -I"$": COLLECTION_PATHS_TEST_SUPPORT_SOURCE_INCLUDE_VENDOR
+    - -I"$": COLLECTION_PATHS_TEST_TOOLCHAIN_INCLUDE
+    - "-D$": COLLECTION_DEFINES_TEST_AND_VENDOR
+    - "-D$": DEFINES_TEST_PREPROCESS
+    - "-DGNU_COMPILER"
+    - '"${1}"'
+  :test_dependencies_generator:
+    :executable: gcc.exe
+    :name: default_test_dependencies_generator
+    :stderr_redirect: :none
+    :background_exec: :none
+    :optional: false
+    :arguments:
+    - ''
+    - ''
+    - "-E"
+    - -I"$": COLLECTION_PATHS_TEST_SUPPORT_SOURCE_INCLUDE_VENDOR
+    - -I"$": COLLECTION_PATHS_TEST_TOOLCHAIN_INCLUDE
+    - "-D$": COLLECTION_DEFINES_TEST_AND_VENDOR
+    - "-D$": DEFINES_TEST_PREPROCESS
+    - "-DGNU_COMPILER"
+    - -MT "${3}"
+    - "-MM"
+    - "-MD"
+    - "-MG"
+    - -MF "${2}"
+    - -c "${1}"
+# LIBRARIES
+# These libraries are automatically injected into the build process. Those specified as
+# common will be used in all types of builds. Otherwise, libraries can be injected in just
+# tests or releases. These options are MERGED with the options in supplemental yaml files.
+:libraries:
+  :placement: :end
+  :flag: "-l${1}"
+  :path_flag: "-L ${1}"
+  :system: []    # for example, you might list 'm' to grab the math library
+  :test: []
+  :release: []
+
+:gcov:
+  :reports:
+    - HtmlDetailed
+  :gcovr:
+    # Use 'title' as title for the HTML report.
+    # Default is 'Head'. (gcovr --html-title)
+    :html_title: Project_Name Code Coverage
+
+    # If the coverage is below MEDIUM, the value is marked as low coverage in the HTML report.
+    # MEDIUM has to be lower than or equal to value of html_high_threshold.
+    # If MEDIUM is equal to value of html_high_threshold the report has only high and low coverage.
+    # Default is 75.0. (gcovr --html-medium-threshold)
+    :html_medium_threshold: 25
+
+    # If the coverage is below HIGH, the value is marked as medium coverage in the HTML report.
+    # HIGH has to be greater than or equal to value of html_medium_threshold.
+    # If HIGH is equal to value of html_medium_threshold the report has only high and low coverage.
+    # Default is 90.0. (gcovr -html-high-threshold)
+    :html_high_threshold: 50
+:plugins:
+  :load_paths:
+    - plugins
+  :enabled:
+    - gcov
+    - stdout_pretty_tests_report
+    # - raw_output_report
+    - module_generator
+    # - colour_report
+    - html_tests_report
+    # - warnings_report
+    # - cppcheck
+...
