@@ -86,8 +86,14 @@ Buton tanımlayarak testleri otomatik hale getirebilirsiniz. Bunun için VS Code
 
 # Reports Images
 
-**Code Coverage Reports**
+**Test Result Report**
 
 ![test_result](doc/test_result.png)
+
+**Code Coverage Report**
+
 ![code_coverage](doc/code_coverage.png)
+
+**Static Analysis Report**
+
 ![static_analysis](doc/static_analysis.png)
