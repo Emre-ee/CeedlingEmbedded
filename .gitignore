@@ -48,7 +48,7 @@ scripts/html-report-stats/*.html
 *scannerwork
 
 # doc private files 
-doc/Stat*
+doc/Statik*
 doc/Unit*
 
 # xemacs temporary files
