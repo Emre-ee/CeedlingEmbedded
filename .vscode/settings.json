@@ -1,0 +1,78 @@
+{
+"VsCodeTaskButtons.showCounter": false,
+"VsCodeTaskButtons.tasks": [
+    {
+        "label": "$(notebook-move-down) Test All",
+        "task": "Test All",
+        "tooltip": "🛠️ Start the \"test\" task"
+    },
+    {
+        "label": "$(search-refresh) Re-Test All",
+        "task": "Clean and Test All",
+        "tooltip": "🧹🛠️ Start the \"re-test all\" task"
+    },
+    {
+        "label": "$(notebook-delete-cell) Clean build",
+        "task": "Clean",
+        "tooltip": "🧹 Start a \"clean\" task",
+    },
+    {
+        "label": "$(bracket) Code Beautifer",
+        "task": "Code Beautifier",
+        "tooltip": "💄 Start a \"beautifer\" task",
+    },
+    // {
+    //     "label": "$(output) Print Log",
+    //     "task": "Print Log Output",
+    //     "tooltip": "🔣 Print  \"Log\" task",
+    // },
+    {
+        "label": "$(report) Report HTML",
+        "task": "Report HTML",
+        "tooltip": "🔣 Report  \"HTML\" task",
+    },
+    {
+        "label": "$(filter-filled) cppcheck",
+        "task": "Static Analysis",
+        "tooltip": "🔣 Report  \"HTML\" task",
+    },
+    {
+        "label": "$(output) Test Result Open",
+        "task": "Open HTML",
+        "tooltip": "🔣 Report  \"HTML\" task",
+    },
+    
+    {
+        "label": "$(testing-show-as-list-icon) MultiPickList",
+        "tasks": [
+            {
+                "label": "$(notebook-move-down) Test All",
+                "task": "build",
+                "description": "🛠️ Start the \"test all\" task"
+            },
+            {
+                "label": "$(search-refresh) Re-Build",
+                "task": "re-build",
+                "description": "🧹🛠️ Start the \"re-build\" task"
+            },
+            {
+                "label": "$(notebook-delete-cell) Clean build",
+                "task": "clean",
+                "description": "🧹 Start a \"clean\" task"
+            },
+            {
+                "label": "$(bracket) Code Beautifer",
+                "task": "Code Beautifier",
+                "description": "💄 Start a \"beautifer\" task",
+            },
+            {
+                "label": "$(output) Open HTML",
+                "task": "Print Log Output",
+                "description": "🔣 Print  \"Log\" task",
+            },
+        ],
+        "tooltip": "👉 Pick a task"
+    }
+]
+
+}
