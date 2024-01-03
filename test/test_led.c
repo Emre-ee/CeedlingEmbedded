@@ -56,7 +56,7 @@ void test_led_write_Valid_Conditions(void)
 
 
    hal_gpio_write_ExpectAndReturn(&GPIOA->gpio_port, GPIO_PIN_0, GPIO_SET, GPIO_OK);
-   TEST_ASSERT_EQUAL(GPIO_OK, led_write(GPIOA, GPIO_PIN_0, GPIO_SET));
+   TEST_ASSERT_EQUAL(LED_OK, led_write(GPIOA, GPIO_PIN_0, GPIO_SET));
 
    /* Free memory */
    TEST_FREE_MEMORY(GPIOA);
