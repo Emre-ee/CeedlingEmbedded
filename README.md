@@ -74,7 +74,6 @@ ceedling test:all
 ```
 
 You can define buttons and you can easily build your project. There task buttons defines with VS Code IDE extension who name is **spencerwmiles.vscode-task-buttons**.
-Buton tanımlayarak testleri otomatik hale getirebilirsiniz. Bunun için VS Code IDE si kullanılarak çeşitli butonlar oluşturulmuştur. Bu butonların görülebilmesi için VS Code extension kısmından **spencerwmiles.vscode-task-buttons** isimli eklenti yüklenmelidir.
 
 - **Test All** button ```ceedling test:all``` command run.
 - **Re-Test All** button allows recompiling the code and running the tests by executing the ```ceedling clobber``` and ```ceedling test:all``` commands sequentially.
@@ -86,8 +85,14 @@ Buton tanımlayarak testleri otomatik hale getirebilirsiniz. Bunun için VS Code
 
 # Reports Images
 
-**Code Coverage Reports**
+**Test Result Report**
 
 ![test_result](doc/test_result.png)
+
+**Code Coverage Report**
+
 ![code_coverage](doc/code_coverage.png)
+
+**Static Analysis Report**
+
 ![static_analysis](doc/static_analysis.png)
